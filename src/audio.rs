@@ -43,11 +43,8 @@ impl SharedSamples {
 }
 
 pub struct AudioInput {
-    pub devices: Vec<String>,
-    pub selected: usize,
     pub sample_rate: u32,
     pub samples: SharedSamples,
-    pub error: Option<String>,
     _stream: Option<Stream>,
 }
 
@@ -61,29 +58,20 @@ impl AudioInput {
                 name.contains("blackstar") || name.contains("polar")
             })
             .unwrap_or(0);
-        let mut input = Self {
-            devices,
-            selected,
-            sample_rate: 48_000,
-            samples: SharedSamples::new(48_000),
-            error: None,
-            _stream: None,
-        };
-        input.start(selected);
-        input
-    }
-
-    pub fn start(&mut self, index: usize) {
-        self._stream = None;
-        self.selected = index;
-        match open_device(index) {
-            Ok((stream, sample_rate, samples)) => {
-                self.sample_rate = sample_rate;
-                self.samples = samples;
-                self.error = None;
-                self._stream = Some(stream);
+        match open_device(selected) {
+            Ok((stream, sample_rate, samples)) => Self {
+                sample_rate,
+                samples,
+                _stream: Some(stream),
+            },
+            Err(error) => {
+                eprintln!("Could not open audio input: {error}");
+                Self {
+                    sample_rate: 48_000,
+                    samples: SharedSamples::new(48_000),
+                    _stream: None,
+                }
             }
-            Err(error) => self.error = Some(error.to_string()),
         }
     }
 }

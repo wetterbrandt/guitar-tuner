@@ -1,6 +1,6 @@
 use crate::audio::AudioInput;
 use crate::pitch::{self, Pitch};
-use eframe::egui::{self, Align2, Color32, FontId, Pos2, Rect, RichText, Stroke, Vec2};
+use eframe::egui::{self, Align2, Color32, FontId, Pos2, Rect, Stroke, Vec2};
 use std::time::{Duration, Instant};
 
 const BG: Color32 = Color32::from_rgb(13, 15, 18);
@@ -338,38 +338,6 @@ impl TunerApp {
                 self.mode_toggle(ui, toggle);
             });
     }
-
-    fn footer(&mut self, ctx: &egui::Context) {
-        egui::TopBottomPanel::bottom("input-footer")
-            .exact_height(62.0)
-            .frame(egui::Frame::none().fill(BG).inner_margin(18.0))
-            .show(ctx, |ui| {
-                ui.horizontal(|ui| {
-                    ui.label(RichText::new("INPUT").size(10.0).color(MUTED));
-                    let current = self
-                        .audio
-                        .devices
-                        .get(self.audio.selected)
-                        .cloned()
-                        .unwrap_or_else(|| "No input device".into());
-                    let mut chosen = self.audio.selected;
-                    egui::ComboBox::from_id_salt("input-device")
-                        .width(260.0)
-                        .selected_text(current)
-                        .show_ui(ui, |ui| {
-                            for (index, name) in self.audio.devices.iter().enumerate() {
-                                ui.selectable_value(&mut chosen, index, name);
-                            }
-                        });
-                    if chosen != self.audio.selected {
-                        self.audio.start(chosen);
-                    }
-                    if let Some(error) = &self.audio.error {
-                        ui.label(RichText::new(error).size(11.0).color(Color32::LIGHT_RED));
-                    }
-                });
-            });
-    }
 }
 
 impl eframe::App for TunerApp {
@@ -381,7 +349,6 @@ impl eframe::App for TunerApp {
         ctx.request_repaint_after(Duration::from_millis(16));
 
         self.header(ctx);
-        self.footer(ctx);
         egui::CentralPanel::default()
             .frame(egui::Frame::none().fill(BG).inner_margin(20.0))
             .show(ctx, |ui| {
