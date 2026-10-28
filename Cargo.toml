@@ -1,0 +1,35 @@
+[package]
+name = "polar-tuner"
+version = "0.1.0"
+edition = "2021"
+description = "A precise, offline electric guitar tuner"
+license = "GPL-3.0-only"
+repository = "https://github.com/wetterbrandt/guitar-tuner"
+
+[dependencies]
+anyhow = "1.0"
+cpal = "0.15"
+eframe = { version = "0.29", default-features = false, features = ["glow", "wayland", "x11"] }
+
+[package.metadata.deb]
+maintainer = "Gustav Wetterbrandt"
+copyright = "2026, Gustav Wetterbrandt"
+license-file = ["LICENSE", "0"]
+extended-description = "A native offline guitar tuner with fast needle and high-precision strobe modes."
+section = "sound"
+priority = "optional"
+assets = [
+    ["target/release/polar-tuner", "usr/bin/", "755"],
+    ["assets/polar-tuner.desktop", "usr/share/applications/", "644"],
+]
+
+[package.metadata.generate-rpm]
+assets = [
+    { source = "target/release/polar-tuner", dest = "/usr/bin/polar-tuner", mode = "755" },
+    { source = "assets/polar-tuner.desktop", dest = "/usr/share/applications/polar-tuner.desktop", mode = "644" },
+]
+
+[profile.release]
+lto = "thin"
+strip = true
+

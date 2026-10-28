@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Polar Tuner
+Comment=Offline needle and strobe guitar tuner
+Exec=polar-tuner
+Terminal=false
+Categories=AudioVideo;Audio;
+
