@@ -192,8 +192,7 @@ impl eframe::App for TunerApp {
                 ui.add_space(25.0);
                 ui.vertical_centered(|ui| {
                     if let Some(pitch) = self.pitch {
-                        ui.horizontal(|ui| {
-                            ui.add_space((ui.available_width() - 150.0) / 2.0);
+                        ui.horizontal_centered(|ui| {
                             ui.label(
                                 RichText::new(pitch.note_name())
                                     .font(FontId::proportional(82.0))

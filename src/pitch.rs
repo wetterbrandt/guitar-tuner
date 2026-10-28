@@ -8,7 +8,7 @@ pub struct Pitch {
 impl Pitch {
     pub fn note_name(&self) -> &'static str {
         const NAMES: [&str; 12] = [
-            "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B",
+            "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B",
         ];
         NAMES[self.midi.rem_euclid(12) as usize]
     }
@@ -87,14 +87,34 @@ pub fn detect(samples: &[f32], sample_rate: u32) -> Option<Pitch> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn sine(frequency: f32) -> Vec<f32> {
+        let rate = 48_000.0;
+        (0..8192)
+            .map(|i| (i as f32 * std::f32::consts::TAU * frequency / rate).sin() * 0.5)
+            .collect()
+    }
+
     #[test]
     fn detects_low_e() {
         let rate = 48_000;
-        let samples: Vec<f32> = (0..8192)
-            .map(|i| (i as f32 * std::f32::consts::TAU * 82.4069 / rate as f32).sin() * 0.5)
-            .collect();
-        let pitch = detect(&samples, rate).unwrap();
+        let pitch = detect(&sine(82.4069), rate).unwrap();
         assert_eq!((pitch.note_name(), pitch.octave()), ("E", 2));
         assert!(pitch.cents.abs() < 0.1);
+    }
+
+    #[test]
+    fn changes_to_the_nearest_flat_note_outside_fifty_cents() {
+        let frequency_at = |cents: f32| 440.0 * 2.0_f32.powf(cents / 1200.0);
+        let note_at = |cents| {
+            detect(&sine(frequency_at(cents)), 48_000)
+                .unwrap()
+                .note_name()
+        };
+
+        assert_eq!(note_at(-49.0), "A");
+        assert_eq!(note_at(49.0), "A");
+        assert_eq!(note_at(-51.0), "Ab");
+        assert_eq!(note_at(51.0), "Bb");
     }
 }
