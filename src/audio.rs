@@ -50,15 +50,7 @@ pub struct AudioInput {
 
 impl AudioInput {
     pub fn new() -> Self {
-        let devices = input_devices().unwrap_or_default();
-        let selected = devices
-            .iter()
-            .position(|name| {
-                let name = name.to_lowercase();
-                name.contains("blackstar") || name.contains("polar")
-            })
-            .unwrap_or(0);
-        match open_device(selected) {
+        match open_device() {
             Ok((stream, sample_rate, samples)) => Self {
                 sample_rate,
                 samples,
@@ -76,19 +68,10 @@ impl AudioInput {
     }
 }
 
-fn input_devices() -> Result<Vec<String>> {
-    Ok(cpal::default_host()
-        .input_devices()?
-        .filter_map(|d| d.name().ok())
-        .collect())
-}
-
-fn open_device(index: usize) -> Result<(Stream, u32, SharedSamples)> {
+fn open_device() -> Result<(Stream, u32, SharedSamples)> {
     let host = cpal::default_host();
     let device = host
-        .input_devices()?
-        .nth(index)
-        .or_else(|| host.default_input_device())
+        .default_input_device()
         .ok_or_else(|| anyhow!("No audio input device was found"))?;
     let supported = device
         .default_input_config()

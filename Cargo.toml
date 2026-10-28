@@ -1,5 +1,5 @@
 [package]
-name = "polar-tuner"
+name = "guitar-tuner"
 version = "0.1.0"
 edition = "2021"
 description = "A precise, offline electric guitar tuner"
@@ -19,14 +19,14 @@ extended-description = "A native offline guitar tuner with fast needle and high-
 section = "sound"
 priority = "optional"
 assets = [
-    ["target/release/polar-tuner", "usr/bin/", "755"],
-    ["assets/polar-tuner.desktop", "usr/share/applications/", "644"],
+    ["target/release/guitar-tuner", "usr/bin/", "755"],
+    ["assets/guitar-tuner.desktop", "usr/share/applications/", "644"],
 ]
 
 [package.metadata.generate-rpm]
 assets = [
-    { source = "target/release/polar-tuner", dest = "/usr/bin/polar-tuner", mode = "755" },
-    { source = "assets/polar-tuner.desktop", dest = "/usr/share/applications/polar-tuner.desktop", mode = "644" },
+    { source = "target/release/guitar-tuner", dest = "/usr/bin/guitar-tuner", mode = "755" },
+    { source = "assets/guitar-tuner.desktop", dest = "/usr/share/applications/guitar-tuner.desktop", mode = "644" },
 ]
 
 [profile.release]

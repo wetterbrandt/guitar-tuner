@@ -1,12 +1,11 @@
-# Polar Tuner
+# Guitar Tuner
 
 A native, completely offline electric guitar tuner for Windows and Linux. It provides a responsive needle mode for everyday tuning and a motion-based strobe display for precision setup and intonation work.
 
 ## Features
 
 - Direct input from USB audio interfaces through WASAPI on Windows and ALSA/PipeWire on Linux
-- Automatic preference for devices containing “Blackstar” or “Polar” in their name
-- Selectable audio input at the bottom of the window
+- Works with any USB audio interface selected as the operating system's default input
 - YIN pitch detection across the guitar range (70–1,200 Hz)
 - Fast needle mode and sub-cent strobe display
 - Dark, minimalist native interface
@@ -21,7 +20,7 @@ sudo apt install libasound2-dev libxkbcommon-dev
 cargo run --release
 ```
 
-Connect the guitar to the Blackstar Polar 2 and select it in the input selector. The app listens only; it does not alter interface output or direct monitoring.
+Connect the guitar to any USB audio interface and select that interface as the operating system's default recording input before launching the app. The app listens only; it does not alter interface output or direct monitoring.
 
 ## Build installers
 

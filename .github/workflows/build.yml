@@ -15,8 +15,8 @@ jobs:
       - run: cargo build --release
       - uses: actions/upload-artifact@v4
         with:
-          name: polar-tuner-windows-x64
-          path: target/release/polar-tuner.exe
+          name: guitar-tuner-windows-x64
+          path: target/release/guitar-tuner.exe
   linux:
     runs-on: ubuntu-24.04
     steps:
@@ -30,7 +30,7 @@ jobs:
       - run: cargo generate-rpm
       - uses: actions/upload-artifact@v4
         with:
-          name: polar-tuner-linux-x64
+          name: guitar-tuner-linux-x64
           path: |
             target/debian/*.deb
             target/generate-rpm/*.rpm

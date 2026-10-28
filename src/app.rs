@@ -320,12 +320,12 @@ impl TunerApp {
                 ui.painter().text(
                     Pos2::new(rect.left(), rect.center().y),
                     Align2::LEFT_CENTER,
-                    "POLAR",
+                    "GUITAR",
                     FontId::proportional(17.0),
                     TEXT,
                 );
                 ui.painter().text(
-                    Pos2::new(rect.left() + 58.0, rect.center().y),
+                    Pos2::new(rect.left() + 66.0, rect.center().y),
                     Align2::LEFT_CENTER,
                     "TUNER",
                     FontId::proportional(17.0),
