@@ -233,27 +233,6 @@ impl TunerApp {
         painter.line_segment([center, tip], Stroke::new(3.0_f32, needle_color));
         painter.circle_filled(center, 8.0, TEXT);
         painter.circle_filled(center, 3.0, needle_color);
-
-        let status = if self.pitch.is_none() {
-            "WAITING FOR SIGNAL"
-        } else if cents.abs() < 2.0 {
-            "IN TUNE"
-        } else if cents < 0.0 {
-            "FLAT  ·  TUNE UP"
-        } else {
-            "SHARP  ·  TUNE DOWN"
-        };
-        painter.text(
-            Pos2::new(rect.center().x, rect.top() + 20.0),
-            Align2::CENTER_CENTER,
-            status,
-            FontId::proportional(11.0),
-            if cents.abs() < 2.0 && self.pitch.is_some() {
-                ACCENT
-            } else {
-                MUTED
-            },
-        );
     }
 
     fn strobe(&mut self, ui: &mut egui::Ui, rect: Rect, dt: f32) {
